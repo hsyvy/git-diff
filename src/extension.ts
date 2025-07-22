@@ -495,7 +495,7 @@ ${gitDiff}`;
         </head>
         <body>
             <div class="header">
-                <h2>Git diff Analysis by Claude</h2>
+                <h1>Git diff Analysis by Claude</h1>
                 <div class="info">
                     <div>Timestamp: ${timestamp}</div>
                     <div>Diff size: ${diffLength.toLocaleString()} characters</div>
