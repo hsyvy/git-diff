@@ -417,21 +417,59 @@ ${gitDiff}`;
                     background: var(--vscode-editor-background);
                 }
                 .header {
+                    margin-bottom: 24px;
+                    padding-bottom: 16px;
+                    border-bottom: 2px solid var(--vscode-panel-border);
+                }
+                
+                .title-section {
                     display: flex;
-                    justify-content: space-between;
                     align-items: center;
-                    margin-bottom: 20px;
-                    padding-bottom: 10px;
-                    border-bottom: 1px solid var(--vscode-panel-border);
+                    gap: 12px;
+                    margin-bottom: 12px;
                 }
-                h2 {
+                
+                .title-section .icon {
+                    font-size: 32px;
+                    line-height: 1;
+                }
+                
+                .title-section h1 {
+                    flex: 0 0 auto;
                     margin: 0;
-                    color: var(--vscode-foreground);
+                    font-size: 28px;
+                    font-weight: 600;
+                    background: linear-gradient(to right, var(--vscode-foreground), var(--vscode-textLink-foreground));
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
                 }
-                .info {
+                
+                .powered-by {
                     font-size: 12px;
                     color: var(--vscode-descriptionForeground);
-                    text-align: right;
+                    font-style: italic;
+                    margin-left: auto;
+                    padding: 4px 8px;
+                    background: var(--vscode-badge-background);
+                    border-radius: 12px;
+                }
+                
+                .info {
+                    display: flex;
+                    gap: 20px;
+                    font-size: 13px;
+                    color: var(--vscode-descriptionForeground);
+                }
+                
+                .info-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+                
+                .info-icon {
+                    font-size: 14px;
                 }
                 .response-container h1 {
                     color: var(--vscode-foreground);
@@ -520,10 +558,20 @@ ${gitDiff}`;
         </head>
         <body>
             <div class="header">
-                <h1>Git diff Analysis by Claude</h1>
+                <div class="title-section">
+                    <span class="icon">🤖</span>
+                    <h1>AI Code Review</h1>
+                    <span class="powered-by">Powered by Claude</span>
+                </div>
                 <div class="info">
-                    <div>Timestamp: ${timestamp}</div>
-                    <div>Diff size: ${diffLength.toLocaleString()} characters</div>
+                    <div class="info-item">
+                        <span class="info-icon">📅</span>
+                        <span>${timestamp}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📊</span>
+                        <span>${diffLength.toLocaleString()} characters analyzed</span>
+                    </div>
                 </div>
             </div>
             
@@ -829,7 +877,7 @@ class DiffItem extends vscode.TreeItem {
                 this.iconPath = new vscode.ThemeIcon('git-commit');
                 break;
             case 'analyze-staged':
-                this.iconPath = new vscode.ThemeIcon('git-stage');
+                this.iconPath = new vscode.ThemeIcon('git-pull-request-draft');
                 break;
             case 'view-last':
                 this.iconPath = new vscode.ThemeIcon('eye');
