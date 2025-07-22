@@ -164,48 +164,73 @@ class ClaudeDiffAnalyzer {
     runClaudeAnalysis(gitDiff: string, token?: vscode.CancellationToken): Promise<any> {
         const prompt = `Analyze this git diff and provide a comprehensive markdown-formatted response.
 
-Please structure your response as follows:
+Please structure your response EXACTLY as follows:
 
 ## Summary
+
 Provide a brief overall summary of the changes.
 
 ## Impact Assessment
-State the impact level: **High** / **Medium** / **Low** with reasoning.
+
+**Impact Level:** High / Medium / Low
+
+Provide reasoning for the impact level.
 
 ## File Changes
 
-For each file, provide:
-- **File:** \`filename\` (use exact path from diff)
-- **Changes:** Brief description
-- **Key modifications:**
-  - List specific important changes
-  - Highlight any patterns or significant updates
-- **Potential issues:** Any concerns specific to this file
+For each file in the diff, create a subsection:
+
+### \`path/to/file.ext\`
+
+**Changes:** Brief description of what changed
+
+**Key modifications:**
+- First modification
+- Second modification
+- Continue listing key changes
+
+**Potential issues:** Describe any concerns or write "None identified"
 
 ## Issues Detected
 
 ### 🔒 Security Issues
-- List any security concerns found
+
+- List security issues here
+- Or write "None detected"
 
 ### 🔌 Integration Issues
-- List any integration problems
+
+- List integration issues here
+- Or write "None detected"
 
 ### 🧪 Testing Gaps
-- List any missing tests or test-related issues
+
+- List testing issues here
+- Or write "None detected"
 
 ### 💡 Code Quality
-- List any code quality improvements needed
+
+- List code quality issues here
+- Or write "None detected"
 
 ## Overall Assessment
 
 ### Critical Issues
-- List critical issues that need immediate attention
+
+- List critical issues here
+- Or write "None"
 
 ### Warnings
-- List warnings about potential problems
+
+- List warnings here
+- Or write "None"
 
 ### Recommendations
-- List suggestions for improvement
+
+- List recommendations here
+- Or write "None"
+
+IMPORTANT: Use proper markdown hierarchy with headers and subheaders. Do not flatten the structure into a single list.
 
 Git diff:
 ${gitDiff}`;
@@ -656,65 +681,93 @@ ${gitDiff}`;
                    .replace(/</g, '&lt;')
                    .replace(/>/g, '&gt;');
         
-        // Headers
+        // Headers (do these before other replacements)
+        html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
         html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
         html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
         html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
         
-        // Bold and Italic
-        html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
-        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-        html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        // Code blocks (before other inline formatting)
+        html = html.replace(/```([\s\S]*?)```/g, (match, code) => {
+            return '<pre><code>' + code.trim() + '</code></pre>';
+        });
         
-        // Code blocks
-        html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
-        
-        // Inline code
+        // Inline code (before bold/italic to avoid conflicts)
         html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
         
-        // Lists
-        const lines = html.split('\n');
-        let inList = false;
-        let listHtml = [];
+        // Bold and Italic (with word boundaries for better matching)
+        html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
         
-        for (let i = 0; i < lines.length; i++) {
+        // Improved list handling with proper nesting
+        const lines = html.split('\n');
+        let processedLines = [];
+        let i = 0;
+        
+        while (i < lines.length) {
             const line = lines[i];
-            const listMatch = line.match(/^[\s]*[-*]\s+(.+)/);
             
-            if (listMatch) {
-                if (!inList) {
-                    listHtml.push('<ul>');
-                    inList = true;
+            // Check if this line starts a list
+            if (line.match(/^\s*[-*+]\s+/)) {
+                let listItems = [];
+                let currentIndent = (line.match(/^(\s*)/) || ['', ''])[1].length;
+                
+                // Collect all consecutive list items at the same level
+                while (i < lines.length) {
+                    const currentLine = lines[i];
+                    const listMatch = currentLine.match(/^(\s*)[-*+]\s+(.+)/);
+                    
+                    if (!listMatch) {
+                        break;
+                    }
+                    
+                    const indent = listMatch[1].length;
+                    if (indent !== currentIndent) {
+                        break;
+                    }
+                    
+                    listItems.push(`<li>${listMatch[2]}</li>`);
+                    i++;
                 }
-                listHtml.push(`<li>${listMatch[1]}</li>`);
+                
+                // Wrap list items in ul
+                if (listItems.length > 0) {
+                    processedLines.push('<ul>' + listItems.join('') + '</ul>');
+                }
             } else {
-                if (inList) {
-                    listHtml.push('</ul>');
-                    inList = false;
-                }
-                listHtml.push(line);
+                processedLines.push(line);
+                i++;
             }
         }
         
-        if (inList) {
-            listHtml.push('</ul>');
-        }
+        html = processedLines.join('\n');
         
-        html = listHtml.join('\n');
-        
-        // Paragraphs and line breaks
-        html = html.replace(/\n\n/g, '</p><p>');
-        html = html.replace(/\n/g, '<br>');
-        html = '<p>' + html + '</p>';
-        
-        // Clean up
-        html = html.replace(/<p><\/p>/g, '');
-        html = html.replace(/<p>(<h[1-3]>)/g, '$1');
-        html = html.replace(/(<\/h[1-3]>)<\/p>/g, '$1');
-        html = html.replace(/<p>(<ul>)/g, '$1');
-        html = html.replace(/(<\/ul>)<\/p>/g, '$1');
-        html = html.replace(/<p>(<pre>)/g, '$1');
-        html = html.replace(/(<\/pre>)<\/p>/g, '$1');
+        // Paragraphs - improved handling
+        const blocks = html.split(/\n\n+/);
+        html = blocks.map(block => {
+            block = block.trim();
+            
+            // Don't wrap if it's already a block element
+            if (block.match(/^<(h[1-6]|ul|ol|pre|blockquote|div|p)/)) {
+                return block;
+            }
+            
+            // Don't wrap empty blocks
+            if (block === '') {
+                return '';
+            }
+            
+            // For lines that aren't in lists or other blocks, wrap in paragraph
+            // but preserve line breaks
+            const lines = block.split('\n');
+            if (lines.length === 1) {
+                return '<p>' + block + '</p>';
+            } else {
+                // Multiple lines - check if they should be separate paragraphs
+                return lines.map(line => line.trim() ? '<p>' + line + '</p>' : '').join('\n');
+            }
+        }).filter(block => block !== '').join('\n\n');
         
         return html;
     }
