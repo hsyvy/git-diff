@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { exec, spawn, execFile } from 'child_process';
 import { promisify } from 'util';
-import { marked } from 'marked';
 
 const execAsync = promisify(exec);
 
@@ -378,22 +377,22 @@ ${gitDiff}`;
         const timestamp = analysis?.timestamp ? new Date(analysis.timestamp).toLocaleString() : new Date().toLocaleString();
         const diffLength = analysis?.diffLength || 0;
         
-        // Convert markdown to HTML
-        const htmlContent = marked.parse(responseText);
-        
+        // Simple markdown to HTML converter
+        let htmlContent = this.parseMarkdown(responseText);
+
         return `<!DOCTYPE html>
         <html>
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
+                /* Your CSS styles here */
                 body {
                     font-family: var(--vscode-font-family);
                     padding: 20px;
                     color: var(--vscode-foreground);
                     background: var(--vscode-editor-background);
                 }
-                
                 .header {
                     display: flex;
                     justify-content: space-between;
@@ -402,29 +401,15 @@ ${gitDiff}`;
                     padding-bottom: 10px;
                     border-bottom: 1px solid var(--vscode-panel-border);
                 }
-                
                 h2 {
                     margin: 0;
                     color: var(--vscode-foreground);
                 }
-                
                 .info {
                     font-size: 12px;
                     color: var(--vscode-descriptionForeground);
                     text-align: right;
                 }
-                
-                .info {
-                    font-size: 12px;
-                    color: var(--vscode-descriptionForeground);
-                }
-                
-                .response-container {
-                    padding: 20px 0;
-                    margin-bottom: 20px;
-                }
-                
-                /* Markdown styles */
                 .response-container h1 {
                     color: var(--vscode-foreground);
                     font-size: 24px;
@@ -432,7 +417,7 @@ ${gitDiff}`;
                     padding-bottom: 5px;
                     border-bottom: 1px solid var(--vscode-panel-border);
                 }
-                
+
                 .response-container h2 {
                     color: var(--vscode-foreground);
                     font-size: 20px;
@@ -459,7 +444,7 @@ ${gitDiff}`;
                     margin: 5px 0;
                     line-height: 1.5;
                 }
-                
+
                 .response-container code {
                     background: var(--vscode-textBlockQuote-background);
                     padding: 2px 4px;
@@ -467,16 +452,7 @@ ${gitDiff}`;
                     font-family: var(--vscode-editor-font-family);
                     font-size: 0.9em;
                 }
-                
-                .response-container pre {
-                    background: var(--vscode-textBlockQuote-background);
-                    border: 1px solid var(--vscode-panel-border);
-                    border-radius: 4px;
-                    padding: 10px;
-                    overflow-x: auto;
-                    margin: 10px 0;
-                }
-                
+
                 .response-container pre code {
                     background: none;
                     padding: 0;
@@ -528,7 +504,9 @@ ${gitDiff}`;
                 </div>
             </div>
             
-            <div class="response-container" id="markdown-content">${htmlContent}</div>
+            <div class="response-container" id="markdown-content">
+                ${htmlContent}
+            </div>
             
             <div class="actions">
                 <button onclick="refresh()">Refresh Analysis</button>
@@ -537,7 +515,7 @@ ${gitDiff}`;
             
             <script>
                 const vscode = acquireVsCodeApi();
-                
+
                 // Make file paths clickable
                 document.addEventListener('DOMContentLoaded', () => {
                     document.querySelectorAll('code').forEach(codeEl => {
@@ -670,6 +648,77 @@ ${gitDiff}`;
     
     handleError(error: any) {
         vscode.window.showErrorMessage(`Analysis failed: ${error.message}`);
+    }
+    
+    private parseMarkdown(markdown: string): string {
+        let html = markdown;
+        
+        // Escape HTML
+        html = html.replace(/&/g, '&amp;')
+                   .replace(/</g, '&lt;')
+                   .replace(/>/g, '&gt;');
+        
+        // Headers
+        html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+        html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+        html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+        
+        // Bold and Italic
+        html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        
+        // Code blocks
+        html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+        
+        // Inline code
+        html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+        
+        // Lists
+        const lines = html.split('\n');
+        let inList = false;
+        let listHtml = [];
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            const listMatch = line.match(/^[\s]*[-*]\s+(.+)/);
+            
+            if (listMatch) {
+                if (!inList) {
+                    listHtml.push('<ul>');
+                    inList = true;
+                }
+                listHtml.push(`<li>${listMatch[1]}</li>`);
+            } else {
+                if (inList) {
+                    listHtml.push('</ul>');
+                    inList = false;
+                }
+                listHtml.push(line);
+            }
+        }
+        
+        if (inList) {
+            listHtml.push('</ul>');
+        }
+        
+        html = listHtml.join('\n');
+        
+        // Paragraphs and line breaks
+        html = html.replace(/\n\n/g, '</p><p>');
+        html = html.replace(/\n/g, '<br>');
+        html = '<p>' + html + '</p>';
+        
+        // Clean up
+        html = html.replace(/<p><\/p>/g, '');
+        html = html.replace(/<p>(<h[1-3]>)/g, '$1');
+        html = html.replace(/(<\/h[1-3]>)<\/p>/g, '$1');
+        html = html.replace(/<p>(<ul>)/g, '$1');
+        html = html.replace(/(<\/ul>)<\/p>/g, '$1');
+        html = html.replace(/<p>(<pre>)/g, '$1');
+        html = html.replace(/(<\/pre>)<\/p>/g, '$1');
+        
+        return html;
     }
 }
 

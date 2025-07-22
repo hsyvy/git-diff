@@ -139,9 +139,5 @@
     "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.28.0",
     "typescript": "^4.9.5"
-  },
-  "dependencies": {
-    "@types/marked": "^5.0.2",
-    "marked": "^16.1.1"
   }
 }
