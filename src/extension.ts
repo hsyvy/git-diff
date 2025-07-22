@@ -166,8 +166,6 @@ class ClaudeDiffAnalyzer {
 
 Please structure your response as follows:
 
-# Git Changes Analysis
-
 ## Summary
 Provide a brief overall summary of the changes.
 
