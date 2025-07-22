@@ -1,0 +1,128 @@
+{
+  "name": "claude-code-git-diff-analyzer",
+  "displayName": "Claude Diff Analyzer",
+  "description": "AI-powered git diff analysis using Claude for claude code",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "claude-diff-analyzer",
+          "title": "Claude Diff Analyzer",
+          "icon": "$(hubot)"
+        }
+      ]
+    },
+    "views": {
+      "claude-diff-analyzer": [
+        {
+          "id": "claudeDiff.mainView",
+          "name": "Git Changes",
+          "icon": "$(git-commit)",
+          "contextualTitle": "Claude Diff Analyzer"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "claudeDiff.analyze",
+        "title": "Analyze All Changes",
+        "icon": "$(hubot)"
+      },
+      {
+        "command": "claudeDiff.analyzeStaged",
+        "title": "Analyze Staged Changes",
+        "icon": "$(hubot)"
+      },
+      {
+        "command": "claudeDiff.analyzeFile",
+        "title": "Analyze This File"
+      },
+      {
+        "command": "claudeDiff.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "claudeDiff.showLastAnalysis",
+        "title": "Show Last Analysis",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "claudeDiff.testWebview",
+        "title": "Test Webview Update",
+        "category": "Claude Diff"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "claudeDiff.analyze",
+          "when": "view == claudeDiff.mainView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "claudeDiff.analyzeStaged",
+          "when": "view == claudeDiff.mainView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "claudeDiff.refresh",
+          "when": "view == claudeDiff.mainView",
+          "group": "navigation@3"
+        }
+      ],
+      "scm/title": [
+        {
+          "command": "claudeDiff.analyze",
+          "group": "navigation",
+          "when": "scmProvider == git"
+        }
+      ],
+      "scm/resourceState/context": [
+        {
+          "command": "claudeDiff.analyzeFile",
+          "when": "scmProvider == git"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Claude Code Git Diff Analyzer",
+      "properties": {
+        "claudeDiff.autoAnalyze": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically analyze changes when opening repository"
+        },
+        "claudeDiff.includeUntrackedFiles": {
+          "type": "boolean",
+          "default": false,
+          "description": "Include untracked files in analysis"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "^16.18.126",
+    "@types/vscode": "^1.98.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.5"
+  }
+}
