@@ -1,40 +1,53 @@
-# Claude Code Git Diff Analyzer
+# Claude-code Diff Visualizer/Analyzer for VS Code
 
-A VSCode extension that uses Claude CLI to analyze git diffs and display results in an intuitive visual interface.
+A powerful VS Code extension that uses Claude AI to analyze your git changes and provide intelligent insights about code modifications, potential issues, and suggestions for improvement.
 
-## Features
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![VS Code](https://img.shields.io/badge/VS%20Code-%5E1.98.0-blue)
 
-- **AI-Powered Analysis**: Uses Claude to analyze git diffs for security issues, code quality, and potential problems
-- **Multiple Analysis Options**:
-  - Analyze all changes in working directory
-  - Analyze only staged changes
-  - Analyze specific files (right-click in Source Control)
-- **Interactive Results**: 
-  - Click file paths to open files
-  - View diff statistics
-  - See issue badges for each file
-  - Overall analysis summary
+## ✨ Features
 
-## Prerequisites
+- 🤖 **AI-Powered Analysis**: Leverages Claude's advanced AI capabilities to understand your code changes
+- 📊 **Comprehensive Insights**: Get summaries, impact assessments, and issue detection for your git diffs
+- 🎯 **Multiple Analysis Modes**: Analyze all changes, staged changes only, or individual files
+- 🌐 **Rich Web View**: Beautiful, interactive display of analysis results
+- ⚡ **Real-time Feedback**: Instant analysis with progress indicators
+- 🔍 **Issue Detection**: Automatically identifies security, integration, testing, and quality issues
+- 📋 **Raw Output Mode**: View Claude's complete analysis response for maximum detail
 
-1. **Claude CLI** must be installed and accessible in your PATH:
+## 📋 Prerequisites
+
+Before using this extension, you need to have Claude Code installed on your system:
+
+1. **Install Claude Code** from the official website: [https://docs.anthropic.com/en/docs/claude-code/overview](https://docs.anthropic.com/en/docs/claude-code/overview)
+2. **Verify installation** by running in your terminal:
    ```bash
-   # Install Claude CLI (if not already installed)
-   # Visit https://claude.ai/code for installation instructions
+   claude --version
    ```
+3. **Git** must be installed and accessible in your PATH
+4. Your workspace must be a **git repository**
 
-2. **Git** must be installed and the workspace must be a git repository
+## 📦 Installation
 
-## Installation
+### From VSIX File
+1. Download the latest `.vsix` file from the [Releases](https://github.com/yourusername/claude-code-git-diff-visualizer/releases) page
+2. In VS Code:
+   - Open Command Palette (`Cmd/Ctrl+Shift+P`)
+   - Run "Extensions: Install from VSIX..."
+   - Select the downloaded `.vsix` file
 
 ### From Source
-
-1. Clone this repository
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/claude-code-git-diff-visualizer.git
+   cd claude-code-git-diff-visualizer
+   ```
 2. Install dependencies:
    ```bash
    npm install
    ```
-3. Compile the extension:
+3. Build the extension:
    ```bash
    npm run compile
    ```
@@ -43,76 +56,146 @@ A VSCode extension that uses Claude CLI to analyze git diffs and display results
    npm install -g vsce
    vsce package
    ```
-5. Install the generated `.vsix` file in VS Code:
-   - Open Command Palette (Cmd/Ctrl+Shift+P)
-   - Run "Extensions: Install from VSIX..."
-   - Select the generated `.vsix` file
+5. Install the generated `.vsix` file using the steps above
 
-### From VS Code Marketplace
+### For Development
+1. Clone and install dependencies as above
+2. Open the project in VS Code
+3. Press `F5` to run the extension in a new Extension Development Host window
 
-(Coming soon)
-
-## Usage
+## 🚀 Usage
 
 ### Quick Start
 
-1. Open a git repository in VS Code
-2. Make some changes to your code
-3. Click the robot icon (🤖) in the Source Control view toolbar
-4. Wait for Claude to analyze your changes
-5. Review the results in the webview panel
+1. **Open a git repository** in VS Code
+2. **Make some changes** to your code
+3. **Click the "🤖 Claude Diff" button** in the status bar
+4. **Wait for analysis** while Claude reviews your changes
+5. **Review results** in the interactive webview panel
 
 ### Available Commands
 
-- **Claude: Analyze All Changes** - Analyzes all unstaged changes
-- **Claude: Analyze Staged Changes** - Analyzes only staged changes
-- **Claude: Analyze This File** - Analyzes a specific file (available in context menu)
+Access these commands through the Command Palette (`Cmd/Ctrl+Shift+P`):
 
-### Configuration
+- **`Claude Diff: Analyze All Changes`** - Analyzes all uncommitted changes
+- **`Claude Diff: Analyze Staged Changes`** - Analyzes only staged changes  
+- **`Claude Diff: Show Last Analysis`** - Displays the most recent analysis results
 
-Configure the extension in VS Code settings:
+### Context Menu Actions
 
-- `claudeDiff.autoAnalyze`: Automatically analyze changes when opening repository (default: false)
-- `claudeDiff.includeUntrackedFiles`: Include untracked files in analysis (default: false)
+- **Right-click a file** in the Source Control view and select **"Analyze This File"** to analyze individual files
 
-## How It Works
+### Understanding the Results
 
-1. The extension runs `git diff` to get changes
-2. Sends the diff to Claude using `claude -p` command
-3. Claude analyzes the diff and returns structured JSON
-4. Results are displayed in an interactive webview
+The analysis results show:
 
-## Troubleshooting
+- **📝 Summary**: Overall description of your changes
+- **🎯 Impact Level**: Assessment of change significance (High/Medium/Low)
+- **📁 File Changes**: Detailed breakdown for each modified file
+- **🔍 Key Changes**: Specific modifications highlighted
+- **⚠️ Issues Detected**:
+  - 🔒 Security concerns
+  - 🔌 Integration issues
+  - 🧪 Testing gaps
+  - 💡 Code quality suggestions
+- **💭 AI Recommendations**: Intelligent suggestions for improvement
 
-### "Claude is not installed or not in PATH"
+## ⚙️ Configuration
 
-Make sure Claude CLI is installed and accessible:
-```bash
-claude --version
+Customize the extension through VS Code settings:
+
+```json
+{
+  "claudeDiff.autoAnalyze": false,          // Auto-analyze when opening repository
+  "claudeDiff.includeUntrackedFiles": false // Include untracked files in analysis
+}
 ```
 
-If not installed, visit https://claude.ai/code for installation instructions.
+Access settings via:
+- Command Palette → "Preferences: Open Settings (UI)"
+- Search for "Claude Diff"
+
+## 🛠️ Development
+
+### Building from Source
+
+```bash
+# Install dependencies
+npm install
+
+# Compile TypeScript
+npm run compile
+
+# Watch for changes during development
+npm run watch
+
+# Package extension
+vsce package
+```
+
+### Project Structure
+
+```
+claude-code-git-diff-visualizer/
+├── src/
+│   └── extension.ts      # Main extension code
+├── package.json          # Extension manifest
+├── tsconfig.json         # TypeScript configuration
+├── README.md            # Documentation
+├── LICENSE.md           # MIT License
+└── .vscodeignore        # Build exclusions
+```
+
+### Contributing
+
+We welcome contributions! Please:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+For major changes, please open an issue first to discuss your ideas.
+
+## 🔧 Troubleshooting
+
+### "Claude CLI is not installed or not in PATH"
+- Ensure Claude Code is installed: [Installation Guide](https://docs.anthropic.com/en/docs/claude-code/overview)
+- Verify installation: `claude --version`
+- Restart VS Code after installation
 
 ### "No changes to analyze"
+- Ensure you have uncommitted changes in your git repository
+- Check that you're in a git repository (`.git` folder exists)
+- For staged analysis, ensure files are staged with `git add`
 
-Make sure you have uncommitted changes in your git repository. The extension only analyzes uncommitted changes.
+### Webview shows loading indefinitely
+- Check VS Code Developer Console: Help → Toggle Developer Tools
+- Look for error messages in the console
+- Try refreshing with the "Refresh Analysis" button
 
-### Analysis fails or times out
+### Analysis takes too long
+- Large diffs may take more time to analyze
+- Try analyzing specific files or staged changes only
+- Check your internet connection (Claude requires connectivity)
 
-- Check that Claude CLI is working properly
-- Try analyzing smaller sets of changes
-- Check VS Code's Output panel for error details
+## 📄 License
 
-## Development
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-To contribute or modify the extension:
+## 🙏 Acknowledgments
 
-1. Clone the repository
-2. Run `npm install`
-3. Open in VS Code
-4. Press F5 to launch a new VS Code window with the extension loaded
-5. Make changes and reload the window to test
+- Built with [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview) by Anthropic
+- Icons from VS Code's built-in icon set
+- Thanks to all contributors and users
 
-## License
+## 📞 Support
 
-MIT
+- **Report bugs**: [GitHub Issues](https://github.com/yourusername/claude-code-git-diff-visualizer/issues)
+- **Request features**: [GitHub Discussions](https://github.com/yourusername/claude-code-git-diff-visualizer/discussions)
+- **Get help**: [Documentation Wiki](https://github.com/yourusername/claude-code-git-diff-visualizer/wiki)
+
+---
+
+**Note**: This extension requires an active Claude Code installation. Claude Code is a separate product from Anthropic and requires its own setup.
