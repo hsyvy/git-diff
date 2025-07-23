@@ -1,0 +1,12 @@
+.vscode/**
+.vscode-test/**
+src/**
+.gitignore
+tsconfig.json
+vsc-extension-quickstart.md
+**/**.ts
+**/*.map
+node_modules/**
+.github/**
+*.vsix
+SPECS.md
