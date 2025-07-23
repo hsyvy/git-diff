@@ -1,9 +1,9 @@
 {
-  "name": "claude-code-git-diff-analyzer",
-  "displayName": "Claude Diff Analyzer",
+  "name": "git-diff-analyzer-claude-code",
+  "displayName": "Git Diff Analyzer",
   "description": "AI-powered git diff analysis using Claude - get intelligent insights about your code changes",
   "version": "1.0.0",
-  "publisher": "claude-diff-analyzer",
+  "publisher": "hs7",
   "license": "MIT",
   "engines": {
     "vscode": "^1.98.0"
@@ -23,44 +23,42 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/claude-code-git-diff-visualizer"
+    "url": "https://github.com/himanshu-zetta/claude-code-git-diff-visualizer"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/claude-code-git-diff-visualizer/issues"
+    "url": "https://github.com/himanshu-zetta/claude-code-git-diff-visualizer/issues"
   },
-  "homepage": "https://github.com/yourusername/claude-code-git-diff-visualizer#readme",
+  "homepage": "https://github.com/himanshu-zetta/claude-code-git-diff-visualizer#readme",
   "main": "./out/extension.js",
   "activationEvents": [],
   "contributes": {
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "claude-diff-analyzer",
-          "title": "Claude Diff Analyzer",
+          "id": "git-diff-analyzer",
+          "title": "Git Diff Analyzer",
           "icon": "$(hubot)"
         }
       ]
     },
     "views": {
-      "claude-diff-analyzer": [
+      "git-diff-analyzer": [
         {
           "id": "claudeDiff.mainView",
-          "name": "Git Changes",
-          "icon": "$(git-commit)",
-          "contextualTitle": "Claude Diff Analyzer"
+          "name": "analyse your code changes",
+          "contextualTitle": "Git Diff Analyzer",
+          "icon": "$(file-code)"
         }
       ]
     },
     "commands": [
       {
         "command": "claudeDiff.analyze",
-        "title": "Analyze All Changes",
-        "icon": "$(hubot)"
+        "title": "Analyze All Changes"
       },
       {
         "command": "claudeDiff.analyzeStaged",
-        "title": "Analyze Staged Changes",
-        "icon": "$(hubot)"
+        "title": "Analyze Staged Changes"
       },
       {
         "command": "claudeDiff.analyzeFile",
@@ -68,33 +66,14 @@
       },
       {
         "command": "claudeDiff.refresh",
-        "title": "Refresh",
-        "icon": "$(refresh)"
+        "title": "Refresh"
       },
       {
         "command": "claudeDiff.showLastAnalysis",
-        "title": "Show Last Analysis",
-        "icon": "$(eye)"
+        "title": "Show Last Analysis"
       }
     ],
     "menus": {
-      "view/title": [
-        {
-          "command": "claudeDiff.analyze",
-          "when": "view == claudeDiff.mainView",
-          "group": "navigation@1"
-        },
-        {
-          "command": "claudeDiff.analyzeStaged",
-          "when": "view == claudeDiff.mainView",
-          "group": "navigation@2"
-        },
-        {
-          "command": "claudeDiff.refresh",
-          "when": "view == claudeDiff.mainView",
-          "group": "navigation@3"
-        }
-      ],
       "scm/title": [
         {
           "command": "claudeDiff.analyze",
@@ -110,7 +89,7 @@
       ]
     },
     "configuration": {
-      "title": "Claude Code Git Diff Analyzer",
+      "title": "Git Diff Analyzer using Claude code",
       "properties": {
         "claudeDiff.autoAnalyze": {
           "type": "boolean",

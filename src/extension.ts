@@ -579,11 +579,6 @@ ${gitDiff}`;
                 ${htmlContent}
             </div>
             
-            <div class="actions">
-                <button onclick="refresh()">Refresh Analysis</button>
-                <button onclick="copyResponse()">Copy Response</button>
-            </div>
-            
             <script>
                 const vscode = acquireVsCodeApi();
 
@@ -603,14 +598,6 @@ ${gitDiff}`;
                     });
                 });
                 
-                function refresh() {
-                    vscode.postMessage({ command: 'refresh' });
-                }
-                
-                function copyResponse() {
-                    const responseText = ${JSON.stringify(responseText)};
-                    navigator.clipboard.writeText(responseText);
-                }
             </script>
         </body>
         </html>`;
