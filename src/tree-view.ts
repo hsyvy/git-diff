@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import * as vscode from 'vscode';
 import { ClaudeDiffAnalyzer } from './analyzer';
 

@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import * as vscode from 'vscode';
 import { spawn, execFile } from 'child_process';
 import { promisify } from 'util';
