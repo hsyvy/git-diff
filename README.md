@@ -70,7 +70,7 @@ Before using this extension, you need to have Claude Code installed on your syst
 
 1. **Open a git repository** in VS Code
 2. **Make some changes** to your code
-3. **Click the "🤖 Claude Diff" button** in the status bar
+3. **Click the "🤖 Git Diff" button** in the status bar
 4. **Wait for analysis** while Claude reviews your changes
 5. **Review results** in the interactive webview panel
 
@@ -78,12 +78,9 @@ Before using this extension, you need to have Claude Code installed on your syst
 
 Access these commands through the Command Palette (`Cmd/Ctrl+Shift+P`):
 
-- **`Claude Diff: Analyze All Changes`** - Analyzes all uncommitted changes
-- **`Claude Diff: Analyze Staged Changes`** - Analyzes only staged changes  
-- **`Claude Diff: Show Last Analysis`** - Displays the most recent analysis results
-- **`Claude Diff: Edit Analysis Prompt`** - Customize the prompt used for analysis
-- **`Claude Diff: Reset to Default Prompt`** - Reset to the default analysis prompt
-- **`Claude Diff: Show Current Prompt`** - View the current analysis prompt
+- **`Git Diff: Analyze All Changes`** - Analyzes all uncommitted changes
+- **`Git Diff: Analyze Staged Changes`** - Analyzes only staged changes  
+- **`Git Diff: Show Last Analysis`** - Displays the most recent analysis results
 
 ### Context Menu Actions
 
@@ -110,21 +107,21 @@ Customize the extension through VS Code settings:
 
 ```json
 {
-  "claudeDiff.autoAnalyze": false,          // Auto-analyze when opening repository
-  "claudeDiff.includeUntrackedFiles": false, // Include untracked files in analysis
-  "claudeDiff.customPrompt": ""             // Custom prompt for analysis (empty = use default)
+  "gitDiff.autoAnalyze": false,          // Auto-analyze when opening repository
+  "gitDiff.includeUntrackedFiles": false, // Include untracked files in analysis
+  "gitDiff.customPrompt": ""             // Custom prompt for analysis (empty = use default)
 }
 ```
 
 Access settings via:
 - Command Palette → "Preferences: Open Settings (UI)"
-- Search for "Claude Diff"
+- Search for "Git Diff"
 
 ### Custom Prompts
 
 You can customize the analysis prompt to focus on specific aspects:
 
-1. **Edit Prompt**: Use `Claude Diff: Edit Analysis Prompt`
+1. **Edit Prompt**: Configure the prompt through settings (`gitDiff.customPrompt`)
 2. **Use Placeholder**: Include `{DIFF_PLACEHOLDER}` in your prompt where the git diff should be inserted
 3. **Save Options**: Choose to save globally (all projects) or per workspace
 

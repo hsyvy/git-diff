@@ -45,7 +45,7 @@
     "views": {
       "git-diff-analyzer": [
         {
-          "id": "claudeDiff.mainView",
+          "id": "gitDiff.mainView",
           "name": "analyse your code changes using claude",
           "contextualTitle": "Git Diff",
           "icon": "$(file-code)"
@@ -54,37 +54,37 @@
     },
     "commands": [
       {
-        "command": "claudeDiff.analyze",
+        "command": "gitDiff.analyze",
         "title": "Analyze All Changes"
       },
       {
-        "command": "claudeDiff.analyzeStaged",
+        "command": "gitDiff.analyzeStaged",
         "title": "Analyze Staged Changes"
       },
       {
-        "command": "claudeDiff.analyzeFile",
+        "command": "gitDiff.analyzeFile",
         "title": "Analyze This File"
       },
       {
-        "command": "claudeDiff.refresh",
+        "command": "gitDiff.refresh",
         "title": "Refresh"
       },
       {
-        "command": "claudeDiff.showLastAnalysis",
+        "command": "gitDiff.showLastAnalysis",
         "title": "Show Last Analysis"
       }
     ],
     "menus": {
       "scm/title": [
         {
-          "command": "claudeDiff.analyze",
+          "command": "gitDiff.analyze",
           "group": "navigation",
           "when": "scmProvider == git"
         }
       ],
       "scm/resourceState/context": [
         {
-          "command": "claudeDiff.analyzeFile",
+          "command": "gitDiff.analyzeFile",
           "when": "scmProvider == git"
         }
       ]
@@ -92,17 +92,17 @@
     "configuration": {
       "title": "Git Diff Analyzer using Claude code",
       "properties": {
-        "claudeDiff.autoAnalyze": {
+        "gitDiff.autoAnalyze": {
           "type": "boolean",
           "default": false,
           "description": "Automatically analyze changes when opening repository"
         },
-        "claudeDiff.includeUntrackedFiles": {
+        "gitDiff.includeUntrackedFiles": {
           "type": "boolean",
           "default": false,
           "description": "Include untracked files in analysis"
         },
-        "claudeDiff.customPrompt": {
+        "gitDiff.customPrompt": {
           "type": "string",
           "default": "",
           "description": "Custom prompt for Claude analysis. Leave empty to use the default prompt.",

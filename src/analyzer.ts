@@ -8,7 +8,7 @@ import { DEFAULT_PROMPT } from './constants';
 
 const execAsync = promisify(execFile);
 
-export class ClaudeDiffAnalyzer {
+export class GitDiffAnalyzer {
     private panel: vscode.WebviewPanel | undefined;
     private lastAnalysis: AnalysisData | null = null;
     private isAnalyzing = false;
@@ -133,7 +133,7 @@ export class ClaudeDiffAnalyzer {
     }
 
     private runClaudeAnalysis(gitDiff: string, token?: vscode.CancellationToken): Promise<string> {
-        const config = vscode.workspace.getConfiguration('claudeDiff');
+        const config = vscode.workspace.getConfiguration('gitDiff');
         const customPrompt = config.get<string>('customPrompt', '').trim();
 
         let prompt: string;
@@ -195,16 +195,11 @@ export class ClaudeDiffAnalyzer {
             return;
         }
 
-        this.panel = vscode.window.createWebviewPanel(
-            'claudeDiffAnalysis',
-            'Claude Diff Analysis',
-            vscode.ViewColumn.Two,
-            {
-                enableScripts: true,
-                retainContextWhenHidden: true,
-                localResourceRoots: []
-            }
-        );
+        this.panel = vscode.window.createWebviewPanel('gitDiffAnalysis', 'Git Diff Analysis', vscode.ViewColumn.Two, {
+            enableScripts: true,
+            retainContextWhenHidden: true,
+            localResourceRoots: []
+        });
 
         this.panel.onDidDispose(
             () => {

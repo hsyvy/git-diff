@@ -1,14 +1,14 @@
 /* eslint-disable indent */
 import * as vscode from 'vscode';
-import { ClaudeDiffAnalyzer } from './analyzer';
+import { GitDiffAnalyzer } from './analyzer';
 
-export class ClaudeDiffViewProvider implements vscode.TreeDataProvider<DiffItem> {
+export class GitDiffViewProvider implements vscode.TreeDataProvider<DiffItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<DiffItem | undefined | null | void> = new vscode.EventEmitter<
         DiffItem | undefined | null | void
     >();
     readonly onDidChangeTreeData: vscode.Event<DiffItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
-    constructor(_analyzer: ClaudeDiffAnalyzer) {
+    constructor(_analyzer: GitDiffAnalyzer) {
         // Analyzer is passed for potential future use
     }
 
@@ -24,15 +24,15 @@ export class ClaudeDiffViewProvider implements vscode.TreeDataProvider<DiffItem>
         if (!element) {
             return Promise.resolve([
                 new DiffItem('Analyze All Changes', 'analyze-all', vscode.TreeItemCollapsibleState.None, {
-                    command: 'claudeDiff.analyze',
+                    command: 'gitDiff.analyze',
                     title: 'Analyze All Changes'
                 }),
                 new DiffItem('Analyze Staged Changes', 'analyze-staged', vscode.TreeItemCollapsibleState.None, {
-                    command: 'claudeDiff.analyzeStaged',
+                    command: 'gitDiff.analyzeStaged',
                     title: 'Analyze Staged Changes'
                 }),
                 new DiffItem('View Last Analysis', 'view-last', vscode.TreeItemCollapsibleState.None, {
-                    command: 'claudeDiff.showLastAnalysis',
+                    command: 'gitDiff.showLastAnalysis',
                     title: 'View Last Analysis'
                 })
             ]);
