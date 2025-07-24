@@ -1,8 +1,8 @@
 {
   "name": "git-diff",
-  "displayName": "Git Diff Analyzer for Claude-code",
-  "description": "AI-powered git diff analysis using Claude for Claude-code - get intelligent insights about your code changes",
-  "icon": "images/icon.png",
+  "displayName": "Git Diff",
+  "description": "AI-powered git diff analysis using Claude",
+  "icon": "images/icon.ico",
   "version": "1.0.0",
   "publisher": "hs7",
   "license": "MIT",
@@ -37,8 +37,8 @@
       "activitybar": [
         {
           "id": "git-diff-analyzer",
-          "title": "Git Diff Analyzer",
-          "icon": "$(hubot)"
+          "title": "Git Diff",
+          "icon": "images/icon.ico"
         }
       ]
     },
@@ -46,8 +46,8 @@
       "git-diff-analyzer": [
         {
           "id": "claudeDiff.mainView",
-          "name": "analyse your code changes",
-          "contextualTitle": "Git Diff Analyzer",
+          "name": "analyse your code changes using claude",
+          "contextualTitle": "Git Diff",
           "icon": "$(file-code)"
         }
       ]
@@ -101,6 +101,12 @@
           "type": "boolean",
           "default": false,
           "description": "Include untracked files in analysis"
+        },
+        "claudeDiff.customPrompt": {
+          "type": "string",
+          "default": "",
+          "description": "Custom prompt for Claude analysis. Leave empty to use the default prompt.",
+          "editPresentation": "multilineText"
         }
       }
     }

@@ -15,6 +15,7 @@ A powerful VS Code extension that uses Claude AI to analyze your git changes and
 - ⚡ **Real-time Feedback**: Instant analysis with progress indicators
 - 🔍 **Issue Detection**: Automatically identifies security, integration, testing, and quality issues
 - 📋 **Raw Output Mode**: View Claude's complete analysis response for maximum detail
+- ✏️ **Custom Prompts**: Customize the analysis prompt to match your specific needs
 
 ## 📋 Prerequisites
 
@@ -80,6 +81,9 @@ Access these commands through the Command Palette (`Cmd/Ctrl+Shift+P`):
 - **`Claude Diff: Analyze All Changes`** - Analyzes all uncommitted changes
 - **`Claude Diff: Analyze Staged Changes`** - Analyzes only staged changes  
 - **`Claude Diff: Show Last Analysis`** - Displays the most recent analysis results
+- **`Claude Diff: Edit Analysis Prompt`** - Customize the prompt used for analysis
+- **`Claude Diff: Reset to Default Prompt`** - Reset to the default analysis prompt
+- **`Claude Diff: Show Current Prompt`** - View the current analysis prompt
 
 ### Context Menu Actions
 
@@ -107,13 +111,27 @@ Customize the extension through VS Code settings:
 ```json
 {
   "claudeDiff.autoAnalyze": false,          // Auto-analyze when opening repository
-  "claudeDiff.includeUntrackedFiles": false // Include untracked files in analysis
+  "claudeDiff.includeUntrackedFiles": false, // Include untracked files in analysis
+  "claudeDiff.customPrompt": ""             // Custom prompt for analysis (empty = use default)
 }
 ```
 
 Access settings via:
 - Command Palette → "Preferences: Open Settings (UI)"
 - Search for "Claude Diff"
+
+### Custom Prompts
+
+You can customize the analysis prompt to focus on specific aspects:
+
+1. **Edit Prompt**: Use `Claude Diff: Edit Analysis Prompt`
+2. **Use Placeholder**: Include `{DIFF_PLACEHOLDER}` in your prompt where the git diff should be inserted
+3. **Save Options**: Choose to save globally (all projects) or per workspace
+
+Example custom prompts:
+- **Security Focus**: Focus on security vulnerabilities, authentication issues, and data exposure
+- **Performance Review**: Analyze for performance bottlenecks, memory leaks, and optimization opportunities
+- **Best Practices**: Check for code style, design patterns, and architectural consistency
 
 ## 🛠️ Development
 
@@ -131,19 +149,6 @@ npm run watch
 
 # Package extension
 vsce package
-```
-
-### Project Structure
-
-```
-claude-code-git-diff-visualizer/
-├── src/
-│   └── extension.ts      # Main extension code
-├── package.json          # Extension manifest
-├── tsconfig.json         # TypeScript configuration
-├── README.md            # Documentation
-├── LICENSE.md           # MIT License
-└── .vscodeignore        # Build exclusions
 ```
 
 ### Contributing
@@ -186,8 +191,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 🙏 Acknowledgments
 
-- Built with [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview) by Anthropic
-- Icons from VS Code's built-in icon set
 - Thanks to all contributors and users
 
 ## 📞 Support
