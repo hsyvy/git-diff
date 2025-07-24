@@ -20,12 +20,10 @@ node_modules/**
 *.yml
 
 src/**
-out/**
 test/**
 typings/**
 out/src/**
 out/test/**
-out/*.map
 
 .gitignore
 .prettierignore
