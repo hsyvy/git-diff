@@ -8,13 +8,14 @@ A powerful VS Code extension that uses Claude AI to analyze your git changes and
 
 ## ✨ Features
 
-- 🤖 **AI-Powered Analysis**: Leverages Claude's advanced AI capabilities to understand your code changes
+- 🔍 **AI-Powered Analysis**: Leverages Claude's advanced AI capabilities to understand your code changes
 - 📊 **Comprehensive Insights**: Get summaries, impact assessments, and issue detection for your git diffs
 - 🎯 **Multiple Analysis Modes**: Analyze all changes, staged changes only, or individual files
 - 🌐 **Rich Web View**: Beautiful, interactive display of analysis results
 - ⚡ **Real-time Feedback**: Instant analysis with progress indicators
 - 🔍 **Issue Detection**: Automatically identifies security, integration, testing, and quality issues
 - 📋 **Raw Output Mode**: View Claude's complete analysis response for maximum detail
+- ✏️ **Custom Prompts**: Customize the analysis prompt to match your specific needs
 
 ## 📋 Prerequisites
 
@@ -69,7 +70,7 @@ Before using this extension, you need to have Claude Code installed on your syst
 
 1. **Open a git repository** in VS Code
 2. **Make some changes** to your code
-3. **Click the "🤖 Claude Diff" button** in the status bar
+3. **Click the "Git Diff" button** in the status bar
 4. **Wait for analysis** while Claude reviews your changes
 5. **Review results** in the interactive webview panel
 
@@ -77,9 +78,9 @@ Before using this extension, you need to have Claude Code installed on your syst
 
 Access these commands through the Command Palette (`Cmd/Ctrl+Shift+P`):
 
-- **`Claude Diff: Analyze All Changes`** - Analyzes all uncommitted changes
-- **`Claude Diff: Analyze Staged Changes`** - Analyzes only staged changes  
-- **`Claude Diff: Show Last Analysis`** - Displays the most recent analysis results
+- **`Git Diff: Analyze All Changes`** - Analyzes all uncommitted changes
+- **`Git Diff: Analyze Staged Changes`** - Analyzes only staged changes  
+- **`Git Diff: Show Last Analysis`** - Displays the most recent analysis results
 
 ### Context Menu Actions
 
@@ -106,14 +107,28 @@ Customize the extension through VS Code settings:
 
 ```json
 {
-  "claudeDiff.autoAnalyze": false,          // Auto-analyze when opening repository
-  "claudeDiff.includeUntrackedFiles": false // Include untracked files in analysis
+  "gitDiff.autoAnalyze": false,          // Auto-analyze when opening repository
+  "gitDiff.includeUntrackedFiles": false, // Include untracked files in analysis
+  "gitDiff.customPrompt": ""             // Custom prompt for analysis (empty = use default)
 }
 ```
 
 Access settings via:
 - Command Palette → "Preferences: Open Settings (UI)"
-- Search for "Claude Diff"
+- Search for "Git Diff"
+
+### Custom Prompts
+
+You can customize the analysis prompt to focus on specific aspects:
+
+1. **Edit Prompt**: Configure the prompt through settings (`gitDiff.customPrompt`)
+2. **Use Placeholder**: Include `{DIFF_PLACEHOLDER}` in your prompt where the git diff should be inserted
+3. **Save Options**: Choose to save globally (all projects) or per workspace
+
+Example custom prompts:
+- **Security Focus**: Focus on security vulnerabilities, authentication issues, and data exposure
+- **Performance Review**: Analyze for performance bottlenecks, memory leaks, and optimization opportunities
+- **Best Practices**: Check for code style, design patterns, and architectural consistency
 
 ## 🛠️ Development
 
@@ -131,19 +146,6 @@ npm run watch
 
 # Package extension
 vsce package
-```
-
-### Project Structure
-
-```
-claude-code-git-diff-visualizer/
-├── src/
-│   └── extension.ts      # Main extension code
-├── package.json          # Extension manifest
-├── tsconfig.json         # TypeScript configuration
-├── README.md            # Documentation
-├── LICENSE.md           # MIT License
-└── .vscodeignore        # Build exclusions
 ```
 
 ### Contributing
@@ -186,8 +188,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 🙏 Acknowledgments
 
-- Built with [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview) by Anthropic
-- Icons from VS Code's built-in icon set
 - Thanks to all contributors and users
 
 ## 📞 Support

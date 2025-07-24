@@ -1,8 +1,9 @@
 {
-  "name": "git-diff-analyzer-claude-code",
-  "displayName": "Git Diff Analyzer",
-  "description": "AI-powered git diff analysis using Claude - get intelligent insights about your code changes",
-  "version": "1.0.0",
+  "name": "git-diff",
+  "displayName": "Git Diff",
+  "description": "AI-powered git diff analysis using Claude",
+  "icon": "images/icon.ico",
+  "version": "1.0.1",
   "publisher": "hs7",
   "license": "MIT",
   "engines": {
@@ -23,12 +24,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/himanshu-zetta/claude-code-git-diff-visualizer"
+    "url": "https://github.com/himanshu-zetta/git-diff"
   },
   "bugs": {
-    "url": "https://github.com/himanshu-zetta/claude-code-git-diff-visualizer/issues"
+    "url": "https://github.com/himanshu-zetta/git-diff/issues"
   },
-  "homepage": "https://github.com/himanshu-zetta/claude-code-git-diff-visualizer#readme",
+  "homepage": "https://github.com/himanshu-zetta/git-diff#readme",
   "main": "./out/extension.js",
   "activationEvents": [],
   "contributes": {
@@ -36,54 +37,54 @@
       "activitybar": [
         {
           "id": "git-diff-analyzer",
-          "title": "Git Diff Analyzer",
-          "icon": "$(hubot)"
+          "title": "Git Diff",
+          "icon": "images/icon.ico"
         }
       ]
     },
     "views": {
       "git-diff-analyzer": [
         {
-          "id": "claudeDiff.mainView",
-          "name": "analyse your code changes",
-          "contextualTitle": "Git Diff Analyzer",
+          "id": "gitDiff.mainView",
+          "name": "analyse your code changes using claude",
+          "contextualTitle": "Git Diff",
           "icon": "$(file-code)"
         }
       ]
     },
     "commands": [
       {
-        "command": "claudeDiff.analyze",
+        "command": "gitDiff.analyze",
         "title": "Analyze All Changes"
       },
       {
-        "command": "claudeDiff.analyzeStaged",
+        "command": "gitDiff.analyzeStaged",
         "title": "Analyze Staged Changes"
       },
       {
-        "command": "claudeDiff.analyzeFile",
+        "command": "gitDiff.analyzeFile",
         "title": "Analyze This File"
       },
       {
-        "command": "claudeDiff.refresh",
+        "command": "gitDiff.refresh",
         "title": "Refresh"
       },
       {
-        "command": "claudeDiff.showLastAnalysis",
+        "command": "gitDiff.showLastAnalysis",
         "title": "Show Last Analysis"
       }
     ],
     "menus": {
       "scm/title": [
         {
-          "command": "claudeDiff.analyze",
+          "command": "gitDiff.analyze",
           "group": "navigation",
           "when": "scmProvider == git"
         }
       ],
       "scm/resourceState/context": [
         {
-          "command": "claudeDiff.analyzeFile",
+          "command": "gitDiff.analyzeFile",
           "when": "scmProvider == git"
         }
       ]
@@ -91,32 +92,52 @@
     "configuration": {
       "title": "Git Diff Analyzer using Claude code",
       "properties": {
-        "claudeDiff.autoAnalyze": {
+        "gitDiff.autoAnalyze": {
           "type": "boolean",
           "default": false,
           "description": "Automatically analyze changes when opening repository"
         },
-        "claudeDiff.includeUntrackedFiles": {
+        "gitDiff.includeUntrackedFiles": {
           "type": "boolean",
           "default": false,
           "description": "Include untracked files in analysis"
+        },
+        "gitDiff.customPrompt": {
+          "type": "string",
+          "default": "",
+          "description": "Custom prompt for Claude analysis. Leave empty to use the default prompt.",
+          "editPresentation": "multilineText"
         }
       }
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run webpack",
+    "webpack": "webpack --mode production",
+    "webpack-dev": "webpack --mode development --watch",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile",
+    "watch": "npm run webpack-dev",
+    "lint": "eslint src --ext ts",
+    "lint:fix": "eslint src --ext ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
+    "pretest": "npm run compile && npm run lint",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
     "@types/node": "^16.18.126",
     "@types/vscode": "^1.98.0",
+    "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
+    "copy-webpack-plugin": "^13.0.0",
     "eslint": "^8.28.0",
-    "typescript": "^4.9.5"
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.3",
+    "prettier": "^3.6.2",
+    "ts-loader": "^9.5.2",
+    "typescript": "^4.9.5",
+    "webpack": "^5.100.2",
+    "webpack-cli": "^6.0.1"
   }
 }
