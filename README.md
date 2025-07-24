@@ -1,4 +1,4 @@
-# Claude-code Diff Visualizer/Analyzer for VS Code
+# Git Diff: analyze your diff using claude (for VS Code)
 
 A powerful VS Code extension that uses Claude AI to analyze your git changes and provide intelligent insights about code modifications, potential issues, and suggestions for improvement.
 
