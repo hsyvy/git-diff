@@ -198,9 +198,7 @@ export class GitDiffAnalyzer {
         this.panel = vscode.window.createWebviewPanel('gitDiffAnalysis', 'Git Diff Analysis', vscode.ViewColumn.Two, {
             enableScripts: true,
             retainContextWhenHidden: true,
-            localResourceRoots: [
-                vscode.Uri.joinPath(this.context.extensionUri, 'images')
-            ]
+            localResourceRoots: [vscode.Uri.joinPath(this.context.extensionUri, 'images')]
         });
 
         this.panel.onDidDispose(
@@ -251,7 +249,9 @@ export class GitDiffAnalyzer {
         this._ensurePanel();
         if (this.panel) {
             try {
-                const iconUri = this.panel.webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'images', 'icon_64.ico'));
+                const iconUri = this.panel.webview.asWebviewUri(
+                    vscode.Uri.joinPath(this.context.extensionUri, 'images', 'icon_64.ico')
+                );
                 this.panel.webview.html = WebviewContent.getRawResponseContent(analysis, iconUri.toString());
             } catch (error: any) {
                 this.panel.webview.html = WebviewContent.getErrorContent(error);

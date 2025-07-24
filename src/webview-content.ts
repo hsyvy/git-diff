@@ -77,14 +77,29 @@ export class WebviewContent {
             <style>
                 body {
                     font-family: var(--vscode-font-family);
-                    padding: 20px;
+                    padding: 24px;
                     color: var(--vscode-foreground);
                     background: var(--vscode-editor-background);
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }
+                
+                /* Special section styling */
+                .critical-section {
+                    border-left-color: var(--vscode-editorError-foreground) !important;
+                }
+                
+                .warning-section {
+                    border-left-color: var(--vscode-editorWarning-foreground) !important;
                 }
                 .header {
-                    margin-bottom: 24px;
-                    padding-bottom: 16px;
-                    border-bottom: 2px solid var(--vscode-panel-border);
+                    margin-bottom: 32px;
+                    padding: 24px;
+                    border: 2px solid var(--vscode-panel-border);
+                    border-radius: 12px;
+                    background: linear-gradient(135deg, 
+                        rgba(var(--vscode-focusBorder), 0.03) 0%, 
+                        transparent 100%);
                 }
                 
                 .title-section {
@@ -136,45 +151,110 @@ export class WebviewContent {
                 .info-icon {
                     font-size: 14px;
                 }
+                /* Section cards */
+                .section-card {
+                    border: 2px solid var(--vscode-panel-border);
+                    border-radius: 12px;
+                    padding: 24px;
+                    margin-bottom: 24px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                    transition: all 0.2s ease;
+                }
+                
+                .section-card:hover {
+                    border-color: var(--vscode-focusBorder);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+                }
+                
+                .section-card h2 {
+                    margin-top: 0;
+                    padding-bottom: 16px;
+                    margin-bottom: 20px;
+                    border-bottom: 2px solid var(--vscode-panel-border);
+                    color: var(--vscode-titleBar-activeForeground);
+                    font-size: 22px;
+                    font-weight: 600;
+                    letter-spacing: -0.02em;
+                }
+                
+                /* Subsection styling */
+                .subsection {
+                    border: 1px solid var(--vscode-widget-border);
+                    border-left: 4px solid var(--vscode-widget-border);
+                    border-radius: 6px;
+                    padding: 16px 20px;
+                    margin: 16px 0;
+                    transition: border-color 0.2s ease;
+                }
+                
+                .subsection:hover {
+                    border-left-color: var(--vscode-focusBorder);
+                }
+                
+                .subsection h3 {
+                    margin-top: 0;
+                    margin-bottom: 12px;
+                    font-size: 16px;
+                    font-weight: 500;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+                
+                .subsection h3 .subsection-icon {
+                    flex-shrink: 0;
+                }
+                
+                .subsection-icon {
+                    font-size: 20px;
+                    opacity: 0.8;
+                }
+                
                 .response-container h1 {
                     color: var(--vscode-foreground);
-                    font-size: 24px;
-                    margin: 20px 0 10px 0;
-                    padding-bottom: 5px;
-                    border-bottom: 1px solid var(--vscode-panel-border);
+                    font-size: 26px;
+                    margin: 36px 0 16px 0;
+                    padding-bottom: 12px;
+                    border-bottom: 2px solid var(--vscode-panel-border);
+                    font-weight: 600;
+                    letter-spacing: -0.03em;
                 }
 
                 .response-container h2 {
                     color: var(--vscode-foreground);
                     font-size: 20px;
-                    margin: 18px 0 8px 0;
+                    margin: 24px 0 12px 0;
+                    font-weight: 600;
                 }
                 
                 .response-container h3 {
                     color: var(--vscode-foreground);
                     font-size: 16px;
-                    margin: 16px 0 6px 0;
+                    margin: 16px 0 8px 0;
+                    font-weight: 500;
                 }
                 
                 .response-container p {
-                    margin: 10px 0;
-                    line-height: 1.5;
+                    margin: 14px 0;
+                    line-height: 1.7;
+                    color: var(--vscode-editor-foreground);
                 }
                 
                 .response-container ul, .response-container ol {
-                    margin: 10px 0;
-                    padding-left: 30px;
+                    margin: 12px 0;
+                    padding-left: 24px;
                 }
                 
                 .response-container li {
-                    margin: 5px 0;
-                    line-height: 1.5;
+                    margin: 8px 0;
+                    line-height: 1.6;
+                    color: var(--vscode-editor-foreground);
                 }
 
                 .response-container code {
-                    background: var(--vscode-textBlockQuote-background);
-                    padding: 2px 4px;
-                    border-radius: 3px;
+                    background: var(--vscode-textCodeBlock-background);
+                    padding: 2px 6px;
+                    border-radius: 4px;
                     font-family: var(--vscode-editor-font-family);
                     font-size: 0.9em;
                 }
@@ -187,6 +267,11 @@ export class WebviewContent {
                 .response-container strong {
                     font-weight: 600;
                     color: var(--vscode-foreground);
+                    background: linear-gradient(to bottom, transparent 60%, var(--vscode-textLink-foreground) 0);
+                    background-size: 100% 0.3em;
+                    background-repeat: no-repeat;
+                    background-position: 0 100%;
+                    padding: 0 2px;
                 }
                 
                 .response-container em {
@@ -194,9 +279,10 @@ export class WebviewContent {
                 }
                 
                 .response-container blockquote {
-                    border-left: 3px solid var(--vscode-panel-border);
-                    margin: 10px 0;
-                    padding-left: 15px;
+                    border-left: 4px solid var(--vscode-textLink-foreground);
+                    margin: 16px 0;
+                    padding: 12px 20px;
+                    border-radius: 4px;
                     color: var(--vscode-descriptionForeground);
                 }
                 
@@ -455,6 +541,85 @@ export class WebviewContent {
             .filter(block => block !== '')
             .join('\n\n');
 
+        // Wrap sections in cards
+        html = this.wrapSectionsInCards(html);
+
         return html;
+    }
+
+    private static wrapSectionsInCards(html: string): string {
+        // Split by h2 headers to create section cards
+        const sections = html.split(/(<h2>.*?<\/h2>)/g);
+        let wrappedHtml = '';
+
+        for (let i = 0; i < sections.length; i++) {
+            const section = sections[i];
+
+            if (section.match(/<h2>/)) {
+                // Start a new section card
+                if (i > 0) {
+                    wrappedHtml += '</div>'; // Close previous section
+                }
+                wrappedHtml += '<div class="section-card">' + section;
+            } else if (section.trim()) {
+                // Check for Issues Detected section to add subsections
+                if (wrappedHtml.includes('>Issues Detected<')) {
+                    // Wrap issue categories in subsections
+                    let processedSection = section;
+
+                    // Security Issues - extract existing emoji
+                    processedSection = processedSection.replace(
+                        /<h3>(🔒\s*)?Security Issues<\/h3>([\s\S]*?)(?=<h3>|$)/g,
+                        '<div class="subsection"><h3><span class="subsection-icon">🔒</span>Security Issues</h3>$2</div>'
+                    );
+
+                    // Integration Issues - extract existing emoji
+                    processedSection = processedSection.replace(
+                        /<h3>(🔌\s*)?Integration Issues<\/h3>([\s\S]*?)(?=<h3>|$)/g,
+                        '<div class="subsection"><h3><span class="subsection-icon">🔌</span>Integration Issues</h3>$2</div>'
+                    );
+
+                    // Testing Gaps - extract existing emoji
+                    processedSection = processedSection.replace(
+                        /<h3>(🧪\s*)?Testing Gaps<\/h3>([\s\S]*?)(?=<h3>|$)/g,
+                        '<div class="subsection"><h3><span class="subsection-icon">🧪</span>Testing Gaps</h3>$2</div>'
+                    );
+
+                    // Code Quality - extract existing emoji
+                    processedSection = processedSection.replace(
+                        /<h3>(💡\s*)?Code Quality<\/h3>([\s\S]*?)(?=<h3>|$)/g,
+                        '<div class="subsection"><h3><span class="subsection-icon">💡</span>Code Quality</h3>$2</div>'
+                    );
+
+                    wrappedHtml += processedSection;
+                } else if (wrappedHtml.includes('>Overall Assessment<')) {
+                    // Handle Overall Assessment section subsections
+                    let processedSection = section;
+
+                    // Critical Issues
+                    processedSection = processedSection.replace(
+                        /<h3>Critical Issues<\/h3>([\s\S]*?)(?=<h3>|$)/g,
+                        '<div class="subsection critical-section"><h3><span class="subsection-icon">⚠️</span>Critical Issues</h3>$1</div>'
+                    );
+
+                    // Warnings
+                    processedSection = processedSection.replace(
+                        /<h3>Warnings<\/h3>([\s\S]*?)(?=<h3>|$)/g,
+                        '<div class="subsection warning-section"><h3><span class="subsection-icon">⚠️</span>Warnings</h3>$1</div>'
+                    );
+
+                    wrappedHtml += processedSection;
+                } else {
+                    wrappedHtml += section;
+                }
+            }
+        }
+
+        // Close the last section if needed
+        if (wrappedHtml.includes('section-card') && !wrappedHtml.endsWith('</div>')) {
+            wrappedHtml += '</div>';
+        }
+
+        return wrappedHtml;
     }
 }

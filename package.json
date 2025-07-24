@@ -3,7 +3,7 @@
   "displayName": "Git Diff",
   "description": "AI-powered git diff analysis using Claude",
   "icon": "images/icon.ico",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "hs7",
   "license": "MIT",
   "engines": {
