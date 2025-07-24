@@ -8,7 +8,7 @@ A powerful VS Code extension that uses Claude AI to analyze your git changes and
 
 ## ✨ Features
 
-- 🤖 **AI-Powered Analysis**: Leverages Claude's advanced AI capabilities to understand your code changes
+- 🔍 **AI-Powered Analysis**: Leverages Claude's advanced AI capabilities to understand your code changes
 - 📊 **Comprehensive Insights**: Get summaries, impact assessments, and issue detection for your git diffs
 - 🎯 **Multiple Analysis Modes**: Analyze all changes, staged changes only, or individual files
 - 🌐 **Rich Web View**: Beautiful, interactive display of analysis results
@@ -70,7 +70,7 @@ Before using this extension, you need to have Claude Code installed on your syst
 
 1. **Open a git repository** in VS Code
 2. **Make some changes** to your code
-3. **Click the "🤖 Git Diff" button** in the status bar
+3. **Click the "Git Diff" button** in the status bar
 4. **Wait for analysis** while Claude reviews your changes
 5. **Review results** in the interactive webview panel
 

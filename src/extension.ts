@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Add status bar item
     const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
-    statusBar.text = '$(hubot) Git Diff';
+    statusBar.text = '$(git-compare) Git Diff';
     statusBar.command = 'gitDiff.analyze';
     statusBar.tooltip = 'Analyze git changes with Claude';
     statusBar.show();

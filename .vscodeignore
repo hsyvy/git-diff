@@ -9,4 +9,3 @@ vsc-extension-quickstart.md
 node_modules/**
 .github/**
 *.vsix
-SPECS.md

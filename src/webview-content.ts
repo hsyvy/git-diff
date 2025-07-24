@@ -60,7 +60,7 @@ export class WebviewContent {
         </html>`;
     }
 
-    static getRawResponseContent(analysis: AnalysisData): string {
+    static getRawResponseContent(analysis: AnalysisData, iconUri: string): string {
         const responseText = analysis?.response || 'No response';
         const timestamp = analysis?.timestamp
             ? new Date(analysis.timestamp).toLocaleString()
@@ -219,13 +219,20 @@ export class WebviewContent {
                 button:hover {
                     background: var(--vscode-button-hoverBackground);
                 }
+                
+                .header-icon {
+                    width: 32px;
+                    height: 32px;
+                    filter: brightness(0.4) contrast(1.2);
+                    opacity: 0.8;
+                }
             </style>
         </head>
         <body>
             <div class="header">
                 <div class="title-section">
-                    <span class="icon">🤖</span>
-                    <h1>AI Code Review</h1>
+                    <img src="${iconUri}" alt="Git Diff Icon" class="header-icon">
+                    <h1>Git Diff</h1>
                     <span class="powered-by">Powered by Claude</span>
                 </div>
                 <div class="info">
