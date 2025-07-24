@@ -11,7 +11,6 @@ describe('Extension', () => {
     beforeEach(() => {
         sandbox = sinon.createSandbox();
         context = createMockContext();
-        
         // Setup default mocks
         mockVscode.window.createStatusBarItem.returns({
             text: '',
@@ -35,7 +34,6 @@ describe('Extension', () => {
 
             // Verify commands registered
             expect(mockVscode.commands.registerCommand.callCount).to.equal(5);
-            
             // Check specific commands
             const registeredCommands = mockVscode.commands.registerCommand.getCalls().map(call => call.args[0]);
             expect(registeredCommands).to.include('gitDiff.analyze');
@@ -90,7 +88,8 @@ describe('Extension', () => {
             activate(context);
 
             // Get the analyze command handler
-            const analyzeCommand = mockVscode.commands.registerCommand.getCalls()
+            const analyzeCommand = mockVscode.commands.registerCommand
+                .getCalls()
                 .find(call => call.args[0] === 'gitDiff.analyze');
             const handler = analyzeCommand?.args[1];
 
@@ -103,7 +102,8 @@ describe('Extension', () => {
             activate(context);
 
             // Get the analyzeStaged command handler
-            const analyzeStagedCommand = mockVscode.commands.registerCommand.getCalls()
+            const analyzeStagedCommand = mockVscode.commands.registerCommand
+                .getCalls()
                 .find(call => call.args[0] === 'gitDiff.analyzeStaged');
             const handler = analyzeStagedCommand?.args[1];
 
@@ -116,7 +116,8 @@ describe('Extension', () => {
             activate(context);
 
             // Get the analyzeFile command handler
-            const analyzeFileCommand = mockVscode.commands.registerCommand.getCalls()
+            const analyzeFileCommand = mockVscode.commands.registerCommand
+                .getCalls()
                 .find(call => call.args[0] === 'gitDiff.analyzeFile');
             const handler = analyzeFileCommand?.args[1];
 
@@ -129,7 +130,8 @@ describe('Extension', () => {
             activate(context);
 
             // Get the refresh command handler
-            const refreshCommand = mockVscode.commands.registerCommand.getCalls()
+            const refreshCommand = mockVscode.commands.registerCommand
+                .getCalls()
                 .find(call => call.args[0] === 'gitDiff.refresh');
             const handler = refreshCommand?.args[1];
 
@@ -142,7 +144,8 @@ describe('Extension', () => {
             activate(context);
 
             // Get the showLastAnalysis command handler
-            const showLastCommand = mockVscode.commands.registerCommand.getCalls()
+            const showLastCommand = mockVscode.commands.registerCommand
+                .getCalls()
                 .find(call => call.args[0] === 'gitDiff.showLastAnalysis');
             const handler = showLastCommand?.args[1];
 

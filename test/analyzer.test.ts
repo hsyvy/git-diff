@@ -82,14 +82,16 @@ describe('GitDiffAnalyzer', () => {
 
             // Start first analysis
             analyzer.analyzeChanges('all');
-            
+
             // Try to start second analysis immediately
             await analyzer.analyzeChanges('all');
 
             // Verify
-            expect(mockVscode.window.showWarningMessage.calledWith(
-                'Analysis already in progress. Please wait for it to complete.'
-            )).to.be.true;
+            expect(
+                mockVscode.window.showWarningMessage.calledWith(
+                    'Analysis already in progress. Please wait for it to complete.'
+                )
+            ).to.be.true;
         });
 
         it('should handle no workspace folder error', async () => {
@@ -279,9 +281,11 @@ describe('GitDiffAnalyzer', () => {
             analyzer.showLastAnalysis();
 
             // Verify
-            expect(mockVscode.window.showInformationMessage.calledWith(
-                'No previous analysis found. Run an analysis first.'
-            )).to.be.true;
+            expect(
+                mockVscode.window.showInformationMessage.calledWith(
+                    'No previous analysis found. Run an analysis first.'
+                )
+            ).to.be.true;
         });
     });
 
@@ -291,16 +295,13 @@ describe('GitDiffAnalyzer', () => {
             mockCP.setupSuccessfulGitDiff();
             mockCP.setupClaudeAvailable();
             mockCP.setupClaudeAnalysis(mockAnalysisResponse);
-            
             const mockPanel = createMockWebviewPanel();
             mockVscode.window.createWebviewPanel.returns(mockPanel);
-            
             // Setup message handler
             let messageHandler: any;
             mockPanel.webview.onDidReceiveMessage.callsFake((handler: any) => {
                 messageHandler = handler;
             });
-            
             mockVscode.Uri.joinPath.returns({ fsPath: '/test/workspace/src/file.ts' });
             mockVscode.window.showTextDocument.resolves();
 
@@ -320,16 +321,13 @@ describe('GitDiffAnalyzer', () => {
             mockCP.setupSuccessfulGitDiff();
             mockCP.setupClaudeAvailable();
             mockCP.setupClaudeAnalysis(mockAnalysisResponse);
-            
             const mockPanel = createMockWebviewPanel();
             mockVscode.window.createWebviewPanel.returns(mockPanel);
-            
             // Setup message handler
             let messageHandler: any;
             mockPanel.webview.onDidReceiveMessage.callsFake((handler: any) => {
                 messageHandler = handler;
             });
-            
             mockVscode.Uri.joinPath.returns({ fsPath: '/test/workspace/src/file.ts' });
 
             // Execute - create panel
@@ -348,10 +346,8 @@ describe('GitDiffAnalyzer', () => {
             mockCP.setupSuccessfulGitDiff();
             mockCP.setupClaudeAvailable();
             mockCP.setupClaudeAnalysis(mockAnalysisResponse);
-            
             const mockPanel = createMockWebviewPanel();
             mockVscode.window.createWebviewPanel.returns(mockPanel);
-            
             // Setup message handler
             let messageHandler: any;
             mockPanel.webview.onDidReceiveMessage.callsFake((handler: any) => {
@@ -361,7 +357,7 @@ describe('GitDiffAnalyzer', () => {
             // Execute - create panel
             await analyzer.analyzeChanges('all');
             await waitForAsync();
-            
+
             // Reset stubs to verify refresh
             mockCP.execFileStub.reset();
             mockCP.spawnStub.reset();

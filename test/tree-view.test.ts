@@ -12,7 +12,6 @@ describe('GitDiffViewProvider', () => {
 
     beforeEach(() => {
         sandbox = sinon.createSandbox();
-        
         // Create mock analyzer
         mockAnalyzer = sandbox.createStubInstance(GitDiffAnalyzer);
         provider = new GitDiffViewProvider(mockAnalyzer as any);
