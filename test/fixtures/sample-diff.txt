@@ -1,0 +1,24 @@
+diff --git a/src/example.ts b/src/example.ts
+index 1234567..abcdefg 100644
+--- a/src/example.ts
++++ b/src/example.ts
+@@ -10,7 +10,8 @@ export class UserService {
+     }
+ 
+     async getUser(id: string) {
+-        return this.db.query(`SELECT * FROM users WHERE id = ${id}`);
++        // Fixed SQL injection vulnerability
++        return this.db.query('SELECT * FROM users WHERE id = ?', [id]);
+     }
+ 
+     async createUser(data: any) {
+@@ -20,4 +21,9 @@ export class UserService {
+             email: data.email
+         });
+     }
++
++    async deleteUser(id: string) {
++        // New method added
++        return this.db.query('DELETE FROM users WHERE id = ?', [id]);
++    }
+ }
