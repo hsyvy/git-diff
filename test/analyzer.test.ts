@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import { GitDiffAnalyzer } from '../src/analyzer';
+let GitDiffAnalyzer: any;
 import { mockVscode, createMockContext, createMockWebviewPanel, resetMocks } from './helpers/mock-vscode';
 import { mockChildProcess, waitForAsync, mockAnalysisResponse } from './helpers/test-utils';
-import * as childProcess from 'child_process';
+import childProcess = require('child_process');
 
 describe('GitDiffAnalyzer', () => {
-    let analyzer: GitDiffAnalyzer;
+    let analyzer: any;
     let context: any;
     let sandbox: sinon.SinonSandbox;
     let mockCP: ReturnType<typeof mockChildProcess>;
@@ -15,7 +15,6 @@ describe('GitDiffAnalyzer', () => {
     beforeEach(() => {
         sandbox = sinon.createSandbox();
         context = createMockContext();
-        analyzer = new GitDiffAnalyzer(context);
         // Setup mocks
         mockCP = mockChildProcess();
         sandbox.stub(childProcess, 'execFile').callsFake(mockCP.execFileStub as any);
@@ -33,6 +32,9 @@ describe('GitDiffAnalyzer', () => {
         mockVscode.window.withProgress.callsFake(async (_options: any, task: any) => {
             return task({ report: sinon.stub() }, { isCancellationRequested: false });
         });
+
+        ({ GitDiffAnalyzer } = require('../src/analyzer'));
+        analyzer = new GitDiffAnalyzer(context);
     });
 
     afterEach(() => {
