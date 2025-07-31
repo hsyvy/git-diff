@@ -1,12 +1,21 @@
 /* eslint-disable indent */
 import * as vscode from 'vscode';
-import { spawn, execFile } from 'child_process';
+import childProcess = require('child_process');
 import { promisify } from 'util';
 import { AnalysisData, AnalysisType, WebviewMessage } from './types';
 import { WebviewContent } from './webview-content';
 import { DEFAULT_PROMPT } from './constants';
 
-const execAsync = promisify(execFile);
+function execAsync(
+    file: string,
+    args: readonly string[],
+    options?: childProcess.ExecFileOptions
+): Promise<{ stdout: string; stderr: string }> {
+    return promisify(childProcess.execFile)(file, args, options) as Promise<{
+        stdout: string;
+        stderr: string;
+    }>;
+}
 
 export class GitDiffAnalyzer {
     private panel: vscode.WebviewPanel | undefined;
@@ -23,7 +32,7 @@ export class GitDiffAnalyzer {
 
         this.isAnalyzing = true;
 
-        vscode.window.withProgress(
+        await vscode.window.withProgress(
             {
                 location: vscode.ProgressLocation.Notification,
                 title: 'Analyzing changes with Claude...',
@@ -150,7 +159,9 @@ export class GitDiffAnalyzer {
         }
 
         return new Promise((resolve, reject) => {
-            const claudeProcess = spawn('claude', ['-p', '-'], { shell: false });
+            const claudeProcess = childProcess.spawn('claude', ['-p', '-'], {
+                shell: false
+            });
 
             let stdoutData = '';
             let stderrData = '';
